@@ -20,6 +20,7 @@ namespace BitDiffer.ConsoleApp
 
 		static int Main(string[] arguments)
 		{
+
 			foreach (TraceListener tl in Trace.Listeners)
 			{
 				if (tl is RelayingTraceListener)
