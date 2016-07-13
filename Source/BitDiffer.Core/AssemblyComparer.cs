@@ -72,7 +72,8 @@ namespace BitDiffer.Core
 
             AssemblyManager manager = AssemblyManagerFactory.Create(level);
             AssemblyComparison ac = new AssemblyComparison();
-            ac.Groups.Add(DoCompareFiles(manager, assemblyFiles));
+            AssemblyGroup assemblyGroup = this.DoCompareFiles(manager, assemblyFiles);
+            ac.Groups.Add(assemblyGroup);
 
             manager.AllExtractionsComplete();
 
@@ -132,11 +133,13 @@ namespace BitDiffer.Core
                 {
                     if (allEntries[i][j].Status == Status.Present)
                     {
-                        thisRun.Add(((AssemblyDirectoryEntry)allEntries[i][j]).Path);
+                        string path = ((AssemblyDirectoryEntry)allEntries[i][j]).Path;
+                        thisRun.Add(path);
                     }
                 }
 
-                ac.Groups.Add(DoCompareFiles(manager, thisRun.ToArray()));
+                AssemblyGroup assemblyGroup = this.DoCompareFiles(manager, thisRun.ToArray());
+                ac.Groups.Add(assemblyGroup);
             }
 
             manager.AllExtractionsComplete();
@@ -215,7 +218,7 @@ namespace BitDiffer.Core
 
                 foreach (string fileName in assemblyFilesResolved)
                 {
-                    AssemblyDetail sortedDetail = group.Assemblies.Find(delegate(AssemblyDetail detail) { return string.Compare(detail.Location, fileName, true) == 0; });
+                    AssemblyDetail sortedDetail = group.Assemblies.Find(delegate (AssemblyDetail detail) { return string.Compare(detail.Location, fileName, true) == 0; });
 
                     if (sortedDetail == null)
                     {

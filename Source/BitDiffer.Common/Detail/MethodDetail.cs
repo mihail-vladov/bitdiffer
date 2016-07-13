@@ -12,152 +12,162 @@ using System.Security;
 
 namespace BitDiffer.Common.Model
 {
-	[Serializable]
-	public class MethodDetail : CodeDetail
-	{
-		private string _body;
+    [Serializable]
+    public class MethodDetail : CodeDetail
+    {
+        private string _body;
+       
 
-		public MethodDetail()
-		{
-		}
+        public MethodDetail()
+        {
+        }
 
-		public MethodDetail(RootDetail parent, MethodBase mi)
-			: base(parent, mi)
-		{
-			CodeStringBuilder csb = new CodeStringBuilder(AppendMode.Text);
-			csb.AppendMethodName(mi);
-			_name = csb.ToString();
+        public MethodDetail(RootDetail parent, MethodBase mi)
+            : base(parent, mi)
+        {
+            CodeStringBuilder csb = new CodeStringBuilder(AppendMode.Text);
+            csb.AppendMethodName(mi);
+            _name = csb.ToString();
 
-			_visibility = VisibilityUtil.GetVisibilityFor(mi);
-			_category = "method";
+            _visibility = VisibilityUtil.GetVisibilityFor(mi);
+            _category = "method";
 
-			MethodBody body = null;
+            MethodBody body = null;
 
-			try
-			{
-				body = mi.GetMethodBody();
-			}
-			catch (VerificationException)
-			{
-				// "Operation could destabilize the runtime" on .NET 3.0 WPF PresentationCore.dll
-			}
+            try
+            {
+                body = mi.GetMethodBody();
+            }
+            catch (VerificationException)
+            {
+                // "Operation could destabilize the runtime" on .NET 3.0 WPF PresentationCore.dll
+            }
 
-			if (body != null)
-			{
-				_body = GenericUtility.GetILAsHashedText(mi);
-			}
+            if (body != null)
+            {
+                //_body = GenericUtility.GetILAsHashedText(mi);
+            }
 
-			csb = new CodeStringBuilder();
+            csb = new CodeStringBuilder();
 
-			AppendAttributesDeclaration(csb);
+            AppendAttributesDeclaration(csb);
 
-			MethodInfo bi = null;			
-			if (mi is MethodInfo)
-			{
-				bi = ((MethodInfo)mi).GetBaseDefinition();
-			}
+            MethodInfo bi = null;
+            if (mi is MethodInfo)
+            {
+                bi = ((MethodInfo)mi).GetBaseDefinition();
+            }
 
-			csb.Mode = AppendMode.Html;
-			csb.AppendVisibility(_visibility);
-			csb.AppendText(" ");
-			csb.Mode = AppendMode.Both;
+            csb.Mode = AppendMode.Html;
+            csb.AppendVisibility(_visibility);
+            csb.AppendText(" ");
+            csb.Mode = AppendMode.Both;
 
-			if (mi.IsAbstract)
-			{
-				if (!mi.DeclaringType.IsInterface)
-				{
-					csb.AppendKeyword("abstract ");
-				}
-			}
-			else if (mi.IsVirtual && !mi.IsFinal)
-			{
-				if (!object.ReferenceEquals(mi, bi))
-				{
-					csb.AppendKeyword("override ");
-				}
-				else
-				{
-					csb.AppendKeyword("virtual ");
-				}
-			}
-			else if (mi.IsStatic)
-			{
-				csb.AppendKeyword("static ");
-			}
+            if (mi.IsAbstract)
+            {
+                if (!mi.DeclaringType.IsInterface)
+                {
+                    csb.AppendKeyword("abstract ");
+                }
+            }
+            else if (mi.IsVirtual && !mi.IsFinal)
+            {
+                if (!object.ReferenceEquals(mi, bi))
+                {
+                    csb.AppendKeyword("override ");
+                }
+                else
+                {
+                    csb.AppendKeyword("virtual ");
+                }
+            }
+            else if (mi.IsStatic)
+            {
+                csb.AppendKeyword("static ");
+            }
 
-			if (mi is MethodInfo)
-			{
-				csb.AppendParameter(((MethodInfo)mi).ReturnParameter);
-			}
+            if (mi is MethodInfo)
+            {
+                csb.AppendParameter(((MethodInfo)mi).ReturnParameter);
+            }
 
-			csb.AppendText(" ");
-			csb.AppendText(_name);
-			csb.AppendText("(");
+            csb.AppendText(" ");
+            csb.AppendText(_name);
+            csb.AppendText("(");
 
-			CodeStringBuilder csbParameters = new CodeStringBuilder(AppendMode.Text);
+            CodeStringBuilder csbParameters = new CodeStringBuilder(AppendMode.Text);
 
-			foreach (ParameterInfo pi in mi.GetParameters())
-			{
-				csb.AppendParameter(pi);
-				csb.AppendText(", ");
+            foreach (ParameterInfo pi in mi.GetParameters())
+            {
+                csb.AppendParameter(pi);
+                csb.AppendText(", ");
 
-				csbParameters.AppendParameterType(pi);
-				csbParameters.AppendText(", ");
+                csbParameters.AppendParameterType(pi);
+                csbParameters.AppendText(", ");
 
-				_parameterCount++;
-			}
+                _parameterCount++;
 
-			if (mi.GetParameters().Length > 0)
-			{
-				csb.RemoveCharsFromEnd(2);
-				csbParameters.RemoveCharsFromEnd(2);
-			}
+                this.ParameterTypes.Add(pi.ParameterType);
+            }
 
-			csb.AppendText(")");
+            if (mi.GetParameters().Length > 0)
+            {
+                csb.RemoveCharsFromEnd(2);
+                csbParameters.RemoveCharsFromEnd(2);
+            }
 
-			if (mi is MethodInfo)
-			{
-				csb.AppendGenericRestrictions(mi);
-			}
+            csb.AppendText(")");
 
-			_declaration = csb.ToString();
-			_declarationHtml = csb.ToHtmlString();
-			_parameterTypesList = csbParameters.ToString();
-		}
+            if (mi is MethodInfo)
+            {
+                csb.AppendGenericRestrictions(mi);
+            }
 
-		public string BodyHash
-		{
-			get { return _body; }
-			set { _body = value; }
-		}
+            _declaration = csb.ToString();
+            _declarationHtml = csb.ToHtmlString();
+            _parameterTypesList = csbParameters.ToString();
+        }
 
-		protected override void SerializeWriteRawContent(XmlWriter writer)
-		{
-			base.SerializeWriteRawContent(writer);
+        public string BodyHash
+        {
+            get { return _body; }
+            set { _body = value; }
+        }
 
-			if (_body != null)
-			{
-				writer.WriteAttributeString("BodyHash", _body);
-			}
-		}
+        protected override void SerializeWriteRawContent(XmlWriter writer)
+        {
+            base.SerializeWriteRawContent(writer);
 
-		protected override ChangeType CompareInstance(ICanCompare previous, bool suppressBreakingChanges)
-		{
-			ChangeType change = base.CompareInstance(previous, suppressBreakingChanges);
+            if (_body != null)
+            {
+                writer.WriteAttributeString("BodyHash", _body);
+            }
+        }
 
-			MethodDetail other = (MethodDetail)previous;
+        protected override void SerializeWriteContent(XmlWriter writer)
+        {
+            base.SerializeWriteContent(writer);
 
-			if (string.Compare(_body, other._body) != 0)
-			{
-				change |= ChangeType.ImplementationChanged;
-			}
+            writer.WriteAttributeString("Parameters", this.ParameterTypesList);
+        }
 
-			return change;
-		}
+        protected override ChangeType CompareInstance(ICanCompare previous, bool suppressBreakingChanges)
+        {
+            ChangeType change = base.CompareInstance(previous, suppressBreakingChanges);
 
-		protected override string SerializeGetElementName()
-		{
-			return "Method";
-		}
-	}
+            MethodDetail other = (MethodDetail)previous;
+
+            if (string.Compare(_body, other._body) != 0)
+            {
+                change |= ChangeType.ImplementationChanged;
+            }
+
+            return change;
+        }
+
+        protected override string SerializeGetElementName()
+        {
+            return "Method";
+        }
+    }
 }

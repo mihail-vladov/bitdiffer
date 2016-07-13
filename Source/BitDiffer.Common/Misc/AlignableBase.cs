@@ -22,7 +22,7 @@ namespace BitDiffer.Common.Misc
 		protected List<ICanAlign> _children = new List<ICanAlign>();
 		private AlignMatchStatus _alignMatchStatus;
 
-		public string Name
+		public virtual string Name
 		{
 			get { return _name; }
 			set { _name = value; }

@@ -5,6 +5,7 @@ using BitDiffer.Extractor;
 
 namespace BitDiffer.Core
 {
+    [Serializable]
 	public class DomainExtractorPair
 	{
 		AppDomain _domain;
@@ -12,11 +13,18 @@ namespace BitDiffer.Core
 
 		public DomainExtractorPair(AppDomain domain, AssemblyExtractor extractor)
 		{
-			_domain = domain;
 			_extractor = extractor;
-		}
+			_domain = domain;
+            _domain.AssemblyResolve += Domain_AssemblyResolve;
 
-		public AppDomain Domain
+        }
+
+        private System.Reflection.Assembly Domain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            return null;
+        }
+
+        public AppDomain Domain
 		{
 			get { return _domain; }
 		}

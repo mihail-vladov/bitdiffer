@@ -7,6 +7,8 @@ using BitDiffer.Common.Misc;
 using BitDiffer.Common.TraceListeners;
 using BitDiffer.Common.Utility;
 using BitDiffer.Core;
+using BitDiffer.ReportGenerator;
+using System.Collections.Generic;
 
 namespace BitDiffer.ConsoleApp
 {
@@ -20,7 +22,40 @@ namespace BitDiffer.ConsoleApp
 
 		static int Main(string[] arguments)
 		{
-			foreach (TraceListener tl in Trace.Listeners)
+
+            //-xpublic - xprotected - noimpl - noattrs -dirs -recurse -out "report.xml" "C:\Users\vladov\Desktop\Old" "C:\Users\vladov\Desktop\New"
+
+            // compare directory 
+            List<string> myArguments = new List<string>();
+
+            arguments = new string[9];
+            myArguments.Add("-isolation");
+            myArguments.Add("high");
+            //myArguments.Add("none");
+            myArguments.Add("-mysettings");
+            myArguments.Add("-dirs");
+            //myArguments.Add("-recurse");
+            myArguments.Add("-nomulti");
+            myArguments.Add("-log");
+            myArguments.Add("log.xml");
+            myArguments.Add("-out");
+            myArguments.Add("report.xml");
+            myArguments.Add("-refdirs");
+            myArguments.Add(@"C:\Users\vladov\Desktop\Dependencies");
+
+            myArguments.Add(@"C:\Users\vladov\Desktop\Old");
+            myArguments.Add(@"C:\Users\vladov\Desktop\New");
+
+            //myArguments.Add(@"C:\Users\vladov\Desktop\Old1");
+            //myArguments.Add(@"C:\Users\vladov\Desktop\New1");
+
+            arguments = new string[myArguments.Count];
+            for (int i = 0; i < myArguments.Count; i++)
+            {
+                arguments[i] = myArguments[i];
+            }
+
+            foreach (TraceListener tl in Trace.Listeners)
 			{
 				if (tl is RelayingTraceListener)
 				{
@@ -55,6 +90,7 @@ namespace BitDiffer.ConsoleApp
 		        return -1;
 		    }
 
+
             if (args.Help)
             {
                 Usage();
@@ -72,12 +108,14 @@ namespace BitDiffer.ConsoleApp
 
             AssemblyComparison ac = new AssemblyComparer().CompareAssemblies(args.ComparisonSet);
 
-            ac.WriteReport(args.ReportFile, AssemblyComparisonXmlWriteMode.Normal);
+            //ac.WriteReport(args.ReportFile, AssemblyComparisonXmlWriteMode.Normal);
 
-            if (args.RawFile != null)
-			{
-                ac.WriteXmlReport(args.RawFile, AssemblyComparisonXmlWriteMode.Raw);
-			}
+            //if (args.RawFile != null)
+            //{
+            //    ac.WriteXmlReport(args.RawFile, AssemblyComparisonXmlWriteMode.Raw);
+            //}
+
+            XmlReport.Generate(args.ReportFile, ac);
 
             Log.Info("Done!");
 

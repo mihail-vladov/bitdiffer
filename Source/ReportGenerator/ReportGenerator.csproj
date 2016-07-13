@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3E31BFA0-CC37-4B7D-89C2-3A72E6D9A881}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BitDiffer.ReportGenerator</RootNamespace>
+    <AssemblyName>BitDiffer.ReportGenerator</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MemberType.cs" />
+    <Compile Include="XmlReport.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Xml\ArrayOfChangedNode.cs" />
+    <Compile Include="Xml\AssemblyElement.cs" />
+    <Compile Include="Xml\ChangeTypeToDifferenceTypeConverter.cs" />
+    <Compile Include="Xml\ClassElement.cs" />
+    <Compile Include="DifferenceTypes.cs" />
+    <Compile Include="Xml\ElementPool.cs" />
+    <Compile Include="Xml\EnumElement.cs" />
+    <Compile Include="Xml\EventElement.cs" />
+    <Compile Include="Xml\FieldElement.cs" />
+    <Compile Include="Xml\MemberElement.cs" />
+    <Compile Include="Xml\MethodElement.cs" />
+    <Compile Include="Xml\PropertyElement.cs" />
+    <Compile Include="Xml\RootElement.cs" />
+    <Compile Include="Xml\TypeElement.cs" />
+    <Compile Include="Xml\XmlElementBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BitDiffer.Common\BitDiffer.Common.csproj">
+      <Project>{4701fedd-3664-432a-b602-4ef5ca3d0050}</Project>
+      <Name>BitDiffer.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BitDiffer.Core\BitDiffer.Core.csproj">
+      <Project>{bb8e530f-3259-4214-95e3-2c6b065ff458}</Project>
+      <Name>BitDiffer.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -49,7 +49,13 @@ namespace BitDiffer.Common.Model
 			}
 		}
 
-		public AssemblyDetail DeclaringAssembly
+        public override string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+
+        public AssemblyDetail DeclaringAssembly
 		{
 			get
 			{
@@ -780,26 +786,50 @@ namespace BitDiffer.Common.Model
 		}
 
 		internal virtual void SerializeWriteXml(XmlWriter writer)
-		{
-			writer.WriteStartElement(SerializeGetElementName());
+        {
+            bool shouldSerialize = this.ShouldSerialize();
+            if (!shouldSerialize)
+            {
+                return;
+            }
 
-			SerializeWriteContent(writer);
+            this.WriteStartElement(writer);
 
-			if (SerializeShouldWriteChildren())
-			{
-				foreach (RootDetail child in FilterChildren<RootDetail>())
-				{
-//					if ((child.FullNameRoot) || (child.FilterStatus != FilterStatus.ExcludedButIncludeForChildren)) // Dont include public stuff inside internal classes for -publiconly 
-					{
-						child.SerializeWriteXml(writer);
-					} 
-				}
-			}
+            this.SerializeWriteContent(writer);
 
-			writer.WriteEndElement();
-		}
+            if (this.SerializeShouldWriteChildren())
+            {
+                foreach (RootDetail child in FilterChildren<RootDetail>())
+                {
+                    //					if ((child.FullNameRoot) || (child.FilterStatus != FilterStatus.ExcludedButIncludeForChildren)) // Dont include public stuff inside internal classes for -publiconly 
+                    {
+                        child.SerializeWriteXml(writer);
+                    }
+                }
+            }
 
-		private bool SerializeShouldWriteChildren()
+            this.WriteElementEnd(writer);
+        }
+
+        private void WriteStartElement(XmlWriter writer)
+        {
+            string elementName = this.SerializeGetElementName();
+            writer.WriteStartElement(elementName);
+        }
+
+        private void WriteElementEnd(XmlWriter writer)
+        {
+            writer.WriteEndElement();
+        }
+
+        private bool ShouldSerialize()
+        {
+            bool shouldSerialize = this.Change != ChangeType.None;
+
+            return shouldSerialize;
+        }
+
+        private bool SerializeShouldWriteChildren()
 		{
 			return (_status == Status.Present) && (_changeThisInstance != ChangeType.Added);
 		}
@@ -823,48 +853,68 @@ namespace BitDiffer.Common.Model
 		}
 
 		protected virtual void SerializeWriteContent(XmlWriter writer)
-		{
-			if (SerializeShouldWriteName())
-			{
-				writer.WriteAttributeString("Name", _name);
-			}
+        {
+            this.SerializeWriteName(writer);
 
-			writer.WriteAttributeString("WhatChanged", SerializeGetWhatChangedName());
+            this.SerializeWriteWhatChanged(writer);
 
-			bool breaking = ChangeTypeUtil.HasBreaking(this.Change);
-			if (breaking)
-			{
-				writer.WriteAttributeString("Breaking", breaking.ToString());
-			}
+            this.SerializeWriteBreaking(writer);
 
-			RootDetail previous = (RootDetail)this.NavigateBackward;
+            this.SerializeWriteWhatChangedValue(writer);
+        }
 
-			if (previous != null)
-			{
-				string from = null;
-				string to = SerializeGetWhatChangedValue(this.Change);
+        protected virtual void SerializeWriteName(XmlWriter writer)
+        {
+            if (SerializeShouldWriteName())
+            {
+                writer.WriteAttributeString("Name", _name);
+            }
+        }
 
-				if (this.Change != ChangeType.Added)
-				{
-					from = previous.SerializeGetWhatChangedValue(this.Change);
-				}
+        protected virtual void SerializeWriteWhatChanged(XmlWriter writer)
+        {
+            string whatChanged = this.SerializeGetWhatChangedName();
+            writer.WriteAttributeString("WhatChanged", whatChanged);
+        }
 
-				if (string.Compare(from, to, false) != 0)
-				{
-					if (from != null)
-					{
-						writer.WriteAttributeString("Previous", from);
-					}
+        protected virtual void SerializeWriteBreaking(XmlWriter writer)
+        {
+            bool breaking = ChangeTypeUtil.HasBreaking(this.Change);
+            if (breaking)
+            {
+                writer.WriteAttributeString("Breaking", breaking.ToString());
+            }
+        }
 
-					if (to != null)
-					{
-						writer.WriteAttributeString("Current", to);
-					}
-				}
-			}
-		}
+        protected virtual void SerializeWriteWhatChangedValue(XmlWriter writer)
+        {
+            RootDetail previous = (RootDetail) this.NavigateBackward;
+            if (previous != null)
+            {
+                string from = null;
+                string to = SerializeGetWhatChangedValue(this.Change);
 
-		protected virtual bool SerializeShouldWriteName()
+                if (this.Change != ChangeType.Added)
+                {
+                    from = previous.SerializeGetWhatChangedValue(this.Change);
+                }
+
+                if (string.Compare(from, to, false) != 0)
+                {
+                    if (from != null)
+                    {
+                        writer.WriteAttributeString("Previous", from);
+                    }
+
+                    if (to != null)
+                    {
+                        writer.WriteAttributeString("Current", to);
+                    }
+                }
+            }
+        }
+
+        protected virtual bool SerializeShouldWriteName()
 		{
 			return true;
 		}

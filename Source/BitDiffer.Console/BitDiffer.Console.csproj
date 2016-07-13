@@ -82,6 +82,10 @@
       <Project>{14E29632-027E-48DF-AC95-40E64BBBC5E0}</Project>
       <Name>BitDiffer.Extractor</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ReportGenerator\ReportGenerator.csproj">
+      <Project>{3E31BFA0-CC37-4B7D-89C2-3A72E6D9A881}</Project>
+      <Name>ReportGenerator</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -39,13 +39,23 @@ namespace BitDiffer.Core
 
 			Log.Verbose("Extracting from assembly {0}", Path.GetFileName(assemblyPath));
 
-			DomainExtractorPair pair = GetExtractor(assemblyPath);
-			AssemblyDetail ad = pair.Extractor.ExtractFrom(assemblyPath, config);
-			OneExtractionComplete(pair);
+			DomainExtractorPair pair = this.GetExtractor(assemblyPath);
+
+            //pair.Domain.AssemblyResolve += Domain_AssemblyResolve;
+
+            AssemblyExtractor assemblyExtractor = pair.Extractor;
+			AssemblyDetail ad = assemblyExtractor.ExtractFrom(assemblyPath, config);
+
+            OneExtractionComplete(pair);
 			return ad;
 		}
 
-		protected abstract DomainExtractorPair GetExtractor(string path);
+        private Assembly Domain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            return null;
+        }
+
+        protected abstract DomainExtractorPair GetExtractor(string path);
 
 		protected virtual void OneExtractionComplete(DomainExtractorPair pair)
 		{

@@ -11,39 +11,54 @@ using BitDiffer.Common.Configuration;
 
 namespace BitDiffer.Common.Model
 {
-	[Serializable]
-	public class CodeDetail : MemberDetail
-	{
-		protected int _parameterCount;
-		protected string _parameterTypesList;
+    [Serializable]
+    public class CodeDetail : MemberDetail
+    {
+        private List<Type> _parameterTypes;
 
-		public CodeDetail()
-		{
-		}
+        protected int _parameterCount;
+        protected string _parameterTypesList;
 
-		public CodeDetail(RootDetail parent, MemberInfo mi)
-			: base(parent, mi)
-		{
-		}
+        public CodeDetail()
+        {
+        }
 
-		public string ParameterTypesList
-		{
-			get { return _parameterTypesList; }
-		}
+        public CodeDetail(RootDetail parent, MemberInfo mi)
+            : base(parent, mi)
+        {
+        }
 
-		public int ParameterCount
-		{
-			get { return _parameterCount; }
-		}
+        public string ParameterTypesList
+        {
+            get { return _parameterTypesList; }
+        }
 
-		protected override void ApplyFilterInstance(ComparisonFilter filter)
-		{
-			base.ApplyFilterInstance(filter);
+        public List<Type> ParameterTypes
+        {
+            get
+            {
+                if (this._parameterTypes == null)
+                {
+                    this._parameterTypes = new List<Type>();
+                }
 
-			if (!filter.CompareMethodImplementations)
-			{
-				_changeThisInstance &= ~ChangeType.ImplementationChanged;
-			}
-		}
-	}
+                return this._parameterTypes;
+            }
+        }
+
+        public int ParameterCount
+        {
+            get { return _parameterCount; }
+        }
+
+        protected override void ApplyFilterInstance(ComparisonFilter filter)
+        {
+            base.ApplyFilterInstance(filter);
+
+            if (!filter.CompareMethodImplementations)
+            {
+                _changeThisInstance &= ~ChangeType.ImplementationChanged;
+            }
+        }
+    }
 }

@@ -17,6 +17,11 @@ namespace BitDiffer.Common.Configuration
 		private string _textFilter;
 		public static ComparisonFilter Default = new ComparisonFilter();
 
+        public ComparisonFilter()
+        {
+
+        }
+
 		[XmlAttribute("PublicTypesOnly")]
 		public bool PublicTypesOnly_Obsolete
 		{

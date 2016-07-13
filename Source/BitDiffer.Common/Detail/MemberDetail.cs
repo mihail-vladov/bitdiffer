@@ -10,6 +10,7 @@ using BitDiffer.Common.Interfaces;
 using BitDiffer.Common.Utility;
 using BitDiffer.Common.Misc;
 using BitDiffer.Common.Configuration;
+using System.Linq;
 
 namespace BitDiffer.Common.Model
 {
@@ -94,7 +95,18 @@ namespace BitDiffer.Common.Model
 			}
 		}
 
-		public override string ToString()
+        protected override void SerializeWriteContent(XmlWriter writer)
+        {
+            this.SerializeWriteName(writer);
+
+            writer.WriteAttributeString("Visibility", this.Visibility.ToString());
+
+            this.SerializeWriteWhatChanged(writer);
+
+            this.SerializeWriteBreaking(writer);
+        }
+
+        public override string ToString()
 		{
 			if (_visibility != Visibility.Invalid)
 			{
