@@ -1,20 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Reflection;
-using System.Xml;
-
-using BitDiffer.Common.Interfaces;
-using BitDiffer.Common.Utility;
-using BitDiffer.Common.Misc;
 using BitDiffer.Common.Configuration;
+using BitDiffer.Common.Misc;
 
 namespace BitDiffer.Common.Model
 {
     [Serializable]
     public class CodeDetail : MemberDetail
     {
-        private List<Type> _parameterTypes;
+        private List<TypeSerializationInfo> _parameterTypes;
 
         protected int _parameterCount;
         protected string _parameterTypesList;
@@ -33,13 +28,13 @@ namespace BitDiffer.Common.Model
             get { return _parameterTypesList; }
         }
 
-        public List<Type> ParameterTypes
+        public List<TypeSerializationInfo> ParameterTypes
         {
             get
             {
                 if (this._parameterTypes == null)
                 {
-                    this._parameterTypes = new List<Type>();
+                    this._parameterTypes = new List<TypeSerializationInfo>();
                 }
 
                 return this._parameterTypes;

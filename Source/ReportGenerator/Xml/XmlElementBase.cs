@@ -132,15 +132,11 @@ namespace BitDiffer.ReportGenerator.Xml
                 return;
             }
 
-            string message = string.Empty;
-            foreach (var argument in obsoleteAttributeDetail.ConstructorArguments)
-            {
-                if (argument.ArgumentType == typeof(string))
-                {
-                    message = argument.Value.ToString();
-                }
-            }
+            IEnumerable<string> constructorArgumentsValues = obsoleteAttributeDetail.ConstructorArguments
+                .Where(arg => arg.ArgumentType.FullName == typeof(string).FullName)
+                .Select(arg => arg.Value.ToString());
 
+            string message = string.Join(", ", constructorArgumentsValues);
             if (!string.IsNullOrEmpty(message))
             {
                 writer.WriteAttributeString("Message", message);
@@ -195,13 +191,13 @@ namespace BitDiffer.ReportGenerator.Xml
         private bool WasVisibleToTheClient()
         {
             MemberDetail memberDetail = this.Node as MemberDetail;
-            if (memberDetail == null)
+            if (memberDetail != null)
             {
                 MemberDetail previous = memberDetail.NavigateBackward as MemberDetail;
                 if (previous != null)
                 {
                     int result = memberDetail.Visibility - previous.Visibility;
-                    if (result < 0 && (previous.Visibility == Visibility.Protected || previous.Visibility == Visibility.Public))
+                    if (result <= 0 && (previous.Visibility == Visibility.Protected || previous.Visibility == Visibility.Public))
                     {
                         return true;
                     }

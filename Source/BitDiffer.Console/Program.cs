@@ -46,8 +46,8 @@ namespace BitDiffer.ConsoleApp
             myArguments.Add(@"C:\Users\vladov\Desktop\Old");
             myArguments.Add(@"C:\Users\vladov\Desktop\New");
 
-            //myArguments.Add(@"C:\Users\vladov\Desktop\Old1");
-            //myArguments.Add(@"C:\Users\vladov\Desktop\New1");
+            //myArguments.Add(@"C:\Users\vladov\Desktop\OldOriginal");
+            //myArguments.Add(@"C:\Users\vladov\Desktop\NewOriginal");
 
             arguments = new string[myArguments.Count];
             for (int i = 0; i < myArguments.Count; i++)

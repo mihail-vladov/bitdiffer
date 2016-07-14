@@ -68,7 +68,7 @@
     <Compile Include="Configuration\AppDomainIsolationLevel.cs" />
     <Compile Include="Configuration\ComparisonFilter.cs" />
     <Compile Include="Configuration\DiffConfig.cs" />
-    <Compile Include="Detail\ArgumentInfo.cs" />
+    <Compile Include="Detail\ArgumentSerializationInfo.cs" />
     <Compile Include="Detail\CodeDetail.cs" />
     <Compile Include="Detail\EnumItemDetail.cs" />
     <Compile Include="Detail\ParentDetail.cs" />
@@ -128,6 +128,7 @@
     <Compile Include="Utility\Log.cs" />
     <Compile Include="Utility\Stopwatch.cs" />
     <Compile Include="Utility\ThreadPoolWait.cs" />
+    <Compile Include="Detail\TypeSerializationInfo.cs" />
     <Compile Include="Utility\VisibilityUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -14,8 +14,8 @@ namespace BitDiffer.Common.Model
     [Serializable]
     public class AttributeDetail : MemberDetail
     {
-        private List<ArgumentDetail> _constructorArguments = new List<ArgumentDetail>();
-        private List<ArgumentDetail> _namedArguments = new List<ArgumentDetail>();
+        private List<ArgumentSerializationInfo> _constructorArguments;
+        private List<ArgumentSerializationInfo> _namedArguments;
 
         public AttributeDetail()
         {
@@ -26,13 +26,13 @@ namespace BitDiffer.Common.Model
         {
             foreach (var item in cad.ConstructorArguments)
             {
-                ArgumentDetail argument = new ArgumentDetail(item.Value, item.ArgumentType);
+                ArgumentSerializationInfo argument = new ArgumentSerializationInfo(item.Value, item.ArgumentType);
                 this.ConstructorArguments.Add(argument);
             }
 
             foreach (var item in cad.NamedArguments)
             {
-                ArgumentDetail argument = new ArgumentDetail(item.TypedValue, null);
+                ArgumentSerializationInfo argument = new ArgumentSerializationInfo(item.TypedValue);
                 this.NamedArguments.Add(argument);
             }
 
@@ -55,26 +55,26 @@ namespace BitDiffer.Common.Model
             _declarationHtml = csb.ToHtmlString();
         }
 
-        public List<ArgumentDetail> ConstructorArguments
+        public List<ArgumentSerializationInfo> ConstructorArguments
         {
             get
             {
                 if (_constructorArguments == null)
                 {
-                    this._constructorArguments = new List<ArgumentDetail>();
+                    this._constructorArguments = new List<ArgumentSerializationInfo>();
                 }
 
                 return this._constructorArguments;
             }
         }
 
-        public List<ArgumentDetail> NamedArguments
+        public List<ArgumentSerializationInfo> NamedArguments
         {
             get
             {
                 if (_namedArguments == null)
                 {
-                    this._namedArguments = new List<ArgumentDetail>();
+                    this._namedArguments = new List<ArgumentSerializationInfo>();
                 }
 
                 return this._namedArguments;

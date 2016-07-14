@@ -45,7 +45,7 @@ namespace BitDiffer.Common.Model
 
             if (body != null)
             {
-                //_body = GenericUtility.GetILAsHashedText(mi);
+                _body = GenericUtility.GetILAsHashedText(mi);
             }
 
             csb = new CodeStringBuilder();
@@ -107,7 +107,7 @@ namespace BitDiffer.Common.Model
 
                 _parameterCount++;
 
-                this.ParameterTypes.Add(pi.ParameterType);
+                this.ParameterTypes.Add(new TypeSerializationInfo(pi.ParameterType));
             }
 
             if (mi.GetParameters().Length > 0)

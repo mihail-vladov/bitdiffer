@@ -1,6 +1,8 @@
 ﻿using System;
 using BitDiffer.Common.Model;
 using System.Xml;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace BitDiffer.ReportGenerator.Xml
 {
@@ -36,10 +38,9 @@ namespace BitDiffer.ReportGenerator.Xml
             MethodDetail methodDetail = this.Node as MethodDetail;
             if(methodDetail != null)
             {
-                foreach (var parameterType in methodDetail.ParameterTypes)
-                {
-                    parameters += parameterType.Name;
-                }
+                IEnumerable<string> parameterNames = methodDetail.ParameterTypes.Select(param => param.Name);
+
+                parameters = string.Join(", ", parameterNames);
             }
 
             return parameters;
