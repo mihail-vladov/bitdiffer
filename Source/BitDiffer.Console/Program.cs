@@ -22,37 +22,33 @@ namespace BitDiffer.ConsoleApp
 
 		static int Main(string[] arguments)
 		{
-
-            //-xpublic - xprotected - noimpl - noattrs -dirs -recurse -out "report.xml" "C:\Users\vladov\Desktop\Old" "C:\Users\vladov\Desktop\New"
-
-            // compare directory 
-            List<string> myArguments = new List<string>();
-
-            arguments = new string[9];
-            myArguments.Add("-isolation");
-            myArguments.Add("high");
-            //myArguments.Add("none");
-            myArguments.Add("-mysettings");
-            myArguments.Add("-dirs");
-            //myArguments.Add("-recurse");
-            myArguments.Add("-nomulti");
-            myArguments.Add("-log");
-            myArguments.Add("log.xml");
-            myArguments.Add("-out");
-            myArguments.Add("report.xml");
-            myArguments.Add("-refdirs");
-            myArguments.Add(@"C:\Users\vladov\Desktop\Dependencies");
-
-            myArguments.Add(@"C:\Users\vladov\Desktop\Old");
-            myArguments.Add(@"C:\Users\vladov\Desktop\New");
-
-            //myArguments.Add(@"C:\Users\vladov\Desktop\OldOriginal");
-            //myArguments.Add(@"C:\Users\vladov\Desktop\NewOriginal");
-
-            arguments = new string[myArguments.Count];
-            for (int i = 0; i < myArguments.Count; i++)
+            if (arguments.Length == 0)
             {
-                arguments[i] = myArguments[i];
+                List<string> myArguments = new List<string>();
+
+                arguments = new string[9];
+                myArguments.Add("-isolation");
+                myArguments.Add("high");
+                myArguments.Add("-mysettings"); // -xinternal -xprivate
+                myArguments.Add("-dirs");
+                myArguments.Add("-log");
+                myArguments.Add("log.xml");
+                myArguments.Add("-out");
+                myArguments.Add("report.xml");
+                myArguments.Add("-refdirs");
+                myArguments.Add(@"C:\Users\vladov\Desktop\Dependencies");
+
+                //myArguments.Add(@"C:\Users\vladov\Desktop\Old");
+                //myArguments.Add(@"C:\Users\vladov\Desktop\New");
+
+                myArguments.Add(@"C:\Users\vladov\Desktop\OldOriginal");
+                myArguments.Add(@"C:\Users\vladov\Desktop\NewOriginal");
+
+                arguments = new string[myArguments.Count];
+                for (int i = 0; i < myArguments.Count; i++)
+                {
+                    arguments[i] = myArguments[i];
+                }
             }
 
             foreach (TraceListener tl in Trace.Listeners)

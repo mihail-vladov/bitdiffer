@@ -119,8 +119,6 @@ namespace BitDiffer.Common.Misc
                     _set.Filter.IncludePrivate = false;
 
                     _set.Filter.ChangedItemsOnly = true;
-
-                    //_set.RecurseSubdirectories = true;
                     break;
                 case "-xpublic":
 			        _set.Filter.IncludePublic = false;
@@ -181,9 +179,7 @@ namespace BitDiffer.Common.Misc
                     _set.Config.IsolationLevel = AppDomainIsolationLevel.None;
                     break;
                 default:
-                    //throw new ArgumentParserException("Unknown isolation level {0}", level);
-                    _set.Config.IsolationLevel = AppDomainIsolationLevel.None;
-                    break;
+                    throw new ArgumentParserException("Unknown isolation level {0}", level);
             }
 		}
 

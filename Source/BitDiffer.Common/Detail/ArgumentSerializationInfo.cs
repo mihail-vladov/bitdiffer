@@ -22,10 +22,13 @@ namespace BitDiffer.Common.Model
 
         public ArgumentSerializationInfo(object value)
         {
-            this.Value = value;
+            if (value != null)
+            {
+                this.Value = value.ToString();
+            }
         }
 
-        public object Value { get; private set; }
+        public string Value { get; private set; }
 
         public TypeSerializationInfo ArgumentType { get; private set; }
     }
