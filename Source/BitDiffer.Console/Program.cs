@@ -26,10 +26,12 @@ namespace BitDiffer.ConsoleApp
             {
                 List<string> myArguments = new List<string>();
 
-                arguments = new string[9];
                 myArguments.Add("-isolation");
                 myArguments.Add("high");
-                myArguments.Add("-mysettings"); // -xinternal -xprivate
+                //myArguments.Add("-visible"); // -xinternal -xprivate
+                myArguments.Add("-xinternal");
+                myArguments.Add("-xprivate");
+                myArguments.Add("-noimpl");
                 myArguments.Add("-dirs");
                 myArguments.Add("-log");
                 myArguments.Add("log.xml");

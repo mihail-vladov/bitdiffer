@@ -112,13 +112,11 @@ namespace BitDiffer.Common.Misc
                     _set.Filter.IncludeInternal = false;
                     _set.Filter.IncludePrivate = false;
                     break;
-                case "-mysettings":
+                case "-visible":
                     _set.Filter.IncludePublic = true;
                     _set.Filter.IncludeProtected = true;
                     _set.Filter.IncludeInternal = false;
                     _set.Filter.IncludePrivate = false;
-
-                    _set.Filter.ChangedItemsOnly = true;
                     break;
                 case "-xpublic":
 			        _set.Filter.IncludePublic = false;
