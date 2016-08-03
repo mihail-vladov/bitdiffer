@@ -7,6 +7,9 @@ using System.Xml.Serialization;
 
 namespace BitDiffer.ReportGenerator
 {
+    /// <summary>
+    /// XmlReport class
+    /// </summary>
     public class XmlReport
     {
         public static void Generate(string filePath, AssemblyComparison assemblyComparison)
