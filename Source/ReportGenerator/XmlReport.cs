@@ -14,6 +14,7 @@ namespace BitDiffer.ReportGenerator
     {
         public static void Generate(string filePath, AssemblyComparison assemblyComparison)
         {
+            // some git hub test
             using (FileStream fs = File.Open(filePath, FileMode.Create))
             {
                 ArrayOfChangedNode arrayOfChangedNode = new ArrayOfChangedNode(assemblyComparison);
