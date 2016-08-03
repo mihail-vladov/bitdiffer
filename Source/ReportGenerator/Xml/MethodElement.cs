@@ -15,6 +15,7 @@ namespace BitDiffer.ReportGenerator.Xml
 
         protected override bool ShouldExportOverride()
         {
+            // TODO: how to show changes in visibility for property get and set!
             if (this.Node.Name == "get" || this.Node.Name == "set")
             {
                 return false;

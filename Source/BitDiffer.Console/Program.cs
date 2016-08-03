@@ -24,6 +24,7 @@ namespace BitDiffer.ConsoleApp
 		{
             if (arguments.Length == 0)
             {
+                // -isolation high -xinternal -xprivate -noimpl -dirs -log log.xml -out report.xml -refdirs C:\Users\vladov\Desktop\Dependencies C:\Users\vladov\Desktop\OldOriginal C:\Users\vladov\Desktop\NewOriginal
                 List<string> myArguments = new List<string>();
 
                 myArguments.Add("-isolation");
@@ -40,11 +41,11 @@ namespace BitDiffer.ConsoleApp
                 myArguments.Add("-refdirs");
                 myArguments.Add(@"C:\Users\vladov\Desktop\Dependencies");
 
-                //myArguments.Add(@"C:\Users\vladov\Desktop\Old");
-                //myArguments.Add(@"C:\Users\vladov\Desktop\New");
+                myArguments.Add(@"C:\Users\vladov\Desktop\Old");
+                myArguments.Add(@"C:\Users\vladov\Desktop\New");
 
-                myArguments.Add(@"C:\Users\vladov\Desktop\OldOriginal");
-                myArguments.Add(@"C:\Users\vladov\Desktop\NewOriginal");
+                //myArguments.Add(@"C:\Users\vladov\Desktop\OldOriginal");
+                //myArguments.Add(@"C:\Users\vladov\Desktop\NewOriginal");
 
                 arguments = new string[myArguments.Count];
                 for (int i = 0; i < myArguments.Count; i++)
